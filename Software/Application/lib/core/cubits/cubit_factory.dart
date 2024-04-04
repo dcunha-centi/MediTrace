@@ -1,8 +1,8 @@
 
 import 'package:generic_project/core/data/repositories/medication_repository/medication_repository_impl.dart';
-import 'package:generic_project/features/home/domain/use_cases/home_use_case_impl.dart';
-import 'package:generic_project/features/home/presentation/business_components/home_cubit.dart';
+import 'package:generic_project/features/dashboard/domain/use_cases/dashboard_use_case_impl.dart';
+import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
 
 class CubitFactory {
-  static HomeCubit get homeCubit => HomeCubit(homeUseCase: HomeUseCaseImpl(medicationRepository: MedicationRepositoryImpl()));
+  static DashboardCubit get dashboardCubit => DashboardCubit(dashboardUseCase: DashboardUseCaseImpl(medicationRepository: MedicationRepositoryImpl()));
 }
