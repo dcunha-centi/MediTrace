@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generic_project/core/cubits/application_state.dart';
 import 'package:generic_project/core/cubits/cubit_factory.dart';
-import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
+import 'package:generic_project/features/dashboard/presentation/business_components/temprature_cubit.dart';
 import 'package:generic_project/features/dashboard/presentation/components/line_chart_widget.dart';
-import 'package:generic_project/features/dashboard/presentation/user_interfaces/temprature_ui.dart';
-import 'package:generic_project/features/home/presentation/user_interfaces/home_ui.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+class TempratureScreen extends StatefulWidget {
+  const TempratureScreen({Key? key}) : super(key: key);
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<TempratureScreen> createState() => _TempratureScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
-  final _dashboardCubit = CubitFactory.dashboardCubit;
+class _TempratureScreenState extends State<TempratureScreen> {
+  final _TempratureCubit = CubitFactory.tempratureCubit;
 
   late DateTime _selectedDate;
   String _selectedDropdownValue = 'Option 1';
@@ -24,8 +22,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
-    _dashboardCubit.getMedications();
-    //_dashboardCubit.getChartData(_selectedDate);
+    _TempratureCubit.getMedications();
+    //_TempratureCubit.getChartData(_selectedDate);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -38,7 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        _dashboardCubit.getChartData(_selectedDate);
+        _TempratureCubit.getChartData(_selectedDate);
       });
     }
   }
@@ -79,16 +77,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               leading: const Icon(Icons.thermostat, color: Colors.blueGrey),
               title: const Text('Temperature'),
               onTap: () {
-                Navigator.pushNamed(context, 'temperature_screen', arguments: _selectedDropdownValue);
+                Navigator.pushNamed(context, 'temprature_screen',
+                    arguments: _selectedDropdownValue);
               },
             ),
             ListTile(
               leading: const Icon(Icons.warning, color: Colors.blueGrey),
               title: const Text('Impacts'),
               onTap: () {
-                Navigator.pushNamed(context, 'impacts_screen',
-                    arguments: _selectedDropdownValue);
-              },
+              Navigator.pushNamed(context, 'impacts_screen',
+                    arguments: _selectedDropdownValue);},
             ),
           ],
         ),
@@ -102,7 +100,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'O valor mais alto de humidade é:',
+                  'O valor mais alto de tempratura é:',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
@@ -150,7 +148,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
             const Text(
-              'O valor mais baixo de humidade é:',
+              'O valor mais baixo de tempratura é:',
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 18,
@@ -158,13 +156,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             Expanded(
-              child: BlocConsumer<DashboardCubit, ApplicationState>(
-                bloc: _dashboardCubit,
+              child: BlocConsumer<TempratureCubit, ApplicationState>(
+                bloc: _TempratureCubit,
                 builder: (context, state) {
                   switch (state.runtimeType) {
-                    case DashboardChartDataLoadedState:
+                    case TempratureChartDataLoadedState:
                       final chartData =
-                          (state as DashboardChartDataLoadedState).chartData;
+                          (state as TempratureChartDataLoadedState).chartData;
                       return LineChartWidget(chartData.cast<double>());
                     case ApplicationLoadingState:
                       return const Center(
