@@ -8,19 +8,34 @@ class LineChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  final Size screenSize = MediaQuery.of(context).size;
+
+  final double containerWidth = (screenSize.width - 60);
     return Center(
       child: SizedBox(
-        width: 1000,
+        width: containerWidth,
         height: 500,
         child: SfCartesianChart(
           primaryXAxis: NumericAxis(),
           primaryYAxis: NumericAxis(),
+          tooltipBehavior: TooltipBehavior(
+            enable: true,
+            format: 'point.y%',
+            ),
+          zoomPanBehavior: ZoomPanBehavior(enableMouseWheelZooming : true
+                  //enableSelectionZooming: true, -----------CropZoom
+                  //selectionRectBorderColor: Colors.red,
+                  //selectionRectBorderWidth: 1,
+                  //selectionRectColor: Colors.grey
+          ),
           series: <ChartSeries>[
             LineSeries<double, double>(
               dataSource: chartData,
               xValueMapper: (double value, _) => chartData.indexOf(value).toDouble(),
               yValueMapper: (value, _) => value,
+
             ),
+            
           ],
         ),
       ),

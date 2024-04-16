@@ -4,8 +4,7 @@ import 'package:generic_project/core/cubits/application_state.dart';
 import 'package:generic_project/core/cubits/cubit_factory.dart';
 import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
 import 'package:generic_project/features/dashboard/presentation/components/line_chart_widget.dart';
-import 'package:generic_project/features/dashboard/presentation/user_interfaces/temprature_ui.dart';
-import 'package:generic_project/features/home/presentation/user_interfaces/home_ui.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -18,7 +17,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _dashboardCubit = CubitFactory.dashboardCubit;
 
   late DateTime _selectedDate;
-  String _selectedDropdownValue = 'Option 1';
+  String _selectedDropdownBox = 'Option 1';
+  String _selectedDropdownMeasurement = 'Tempratura';
 
   @override
   void initState() {
@@ -44,144 +44,191 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meditrace Dashboard'),
-        centerTitle: true,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-              ),
-              child: Center(
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.water_drop, color: Colors.blueGrey),
-              title: const Text('Humidity'),
-              onTap: () {
-                Navigator.pushNamed(context, 'humidity_screen',
-                    arguments: _selectedDropdownValue);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.thermostat, color: Colors.blueGrey),
-              title: const Text('Temperature'),
-              onTap: () {
-                Navigator.pushNamed(context, 'temperature_screen', arguments: _selectedDropdownValue);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.warning, color: Colors.blueGrey),
-              title: const Text('Impacts'),
-              onTap: () {
-                Navigator.pushNamed(context, 'impacts_screen',
-                    arguments: _selectedDropdownValue);
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'O valor mais alto de humidade é:',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => _selectDate(context),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Selected Date: ${_selectedDate.toString().substring(0, 10)}',
-                        textAlign: TextAlign.center,
+Widget build(BuildContext context) {
+  final Size screenSize = MediaQuery.of(context).size;
+
+  final double containerWidth = (screenSize.width - 60) / 3;
+
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Meditrace Dashboard'),
+      centerTitle: true,
+    ),
+    body: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: 15),
+                  Container(
+                    width: containerWidth,
+                    height: 56,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 14,
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 2, color: Color(0xFFC4CFEE)),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      const SizedBox(width: 5),
-                      Icon(
-                        Icons.calendar_today,
-                        color: Colors.blueGrey,
+                    ),
+                    child: DropdownButton<String>(
+                      value: _selectedDropdownBox,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedDropdownBox = newValue;
+                          });
+                        }
+                      },
+                      items: <String>[
+                        'Option 1',
+                        'Option 2',
+                        'Option 3',
+                        'Option 4'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      style: TextStyle(
+                        color: Color(0xFF202447),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
                       ),
-                    ],
+                      dropdownColor: Colors.white,
+                      elevation: 4,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF202447),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                DropdownButton<String>(
-                  value: _selectedDropdownValue,
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        _selectedDropdownValue = newValue;
-                      });
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: Container(
+                      width: containerWidth,
+                      height: 56,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 14,
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 2, color: Color(0xFFC4CFEE)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () => _selectDate(context),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Selected Date: ${_selectedDate.toString().substring(0, 10)}',
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(width: 5),
+                              Icon(
+                                Icons.calendar_today,
+                                color: Colors.blueGrey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Container(
+                    width: containerWidth,
+                    height: 56,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 14,
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 2, color: Color(0xFFC4CFEE)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: DropdownButton<String>(
+                      value: _selectedDropdownMeasurement,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedDropdownMeasurement = newValue;
+                          });
+                        }
+                      },
+                      items: <String>[
+                        'Tempratura',
+                        'Humidity',
+                        'Impacts'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      style: TextStyle(
+                        color: Color(0xFF202447),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      ),
+                      elevation: 4,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF202447),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                ],
+              ),
+              SizedBox(height: 15),
+              Expanded(
+                child: BlocConsumer<DashboardCubit, ApplicationState>(
+                  bloc: _dashboardCubit,
+                  builder: (context, state) {
+                    switch (state.runtimeType) {
+                      case DashboardChartDataLoadedState:
+                        final chartData =
+                            (state as DashboardChartDataLoadedState)
+                                .chartData;
+                        return LineChartWidget(chartData.cast<double>());
+                      case ApplicationLoadingState:
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.blueGrey,
+                          ),
+                        );
+                      default:
+                        return const LineChartWidget([]);
                     }
                   },
-                  items: <String>[
-                    'Option 1',
-                    'Option 2',
-                    'Option 3',
-                    'Option 4'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                  listener: (context, state) {},
                 ),
-              ],
-            ),
-            const Text(
-              'O valor mais baixo de humidade é:',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
               ),
-            ),
-            Expanded(
-              child: BlocConsumer<DashboardCubit, ApplicationState>(
-                bloc: _dashboardCubit,
-                builder: (context, state) {
-                  switch (state.runtimeType) {
-                    case DashboardChartDataLoadedState:
-                      final chartData =
-                          (state as DashboardChartDataLoadedState).chartData;
-                      return LineChartWidget(chartData.cast<double>());
-                    case ApplicationLoadingState:
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blueGrey,
-                        ),
-                      );
-                    default:
-                      return const LineChartWidget([]);
-                  }
-                },
-                listener: (context, state) {},
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
+
 }

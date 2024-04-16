@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generic_project/core/cubits/application_state.dart';
 import 'package:generic_project/core/cubits/cubit_factory.dart';
-import 'package:generic_project/features/dashboard/presentation/business_components/temprature_cubit.dart';
+import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
 import 'package:generic_project/features/dashboard/presentation/components/line_chart_widget.dart';
 
 class TempratureScreen extends StatefulWidget {
@@ -13,7 +13,7 @@ class TempratureScreen extends StatefulWidget {
 }
 
 class _TempratureScreenState extends State<TempratureScreen> {
-  final _TempratureCubit = CubitFactory.tempratureCubit;
+  final _DashboardCubit = CubitFactory.dashboardCubit;
 
   late DateTime _selectedDate;
   String _selectedDropdownValue = 'Option 1';
@@ -22,8 +22,8 @@ class _TempratureScreenState extends State<TempratureScreen> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
-    _TempratureCubit.getMedications();
-    //_TempratureCubit.getChartData(_selectedDate);
+    _DashboardCubit.getMedications();
+    //_DashboardCubit.getChartData(_selectedDate);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -36,7 +36,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        _TempratureCubit.getChartData(_selectedDate);
+        _DashboardCubit.getChartData(_selectedDate);
       });
     }
   }
@@ -77,7 +77,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
               leading: const Icon(Icons.thermostat, color: Colors.blueGrey),
               title: const Text('Temperature'),
               onTap: () {
-                Navigator.pushNamed(context, 'temprature_screen',
+                Navigator.pushNamed(context, 'dashboard_screen',
                     arguments: _selectedDropdownValue);
               },
             ),
@@ -156,13 +156,13 @@ class _TempratureScreenState extends State<TempratureScreen> {
               ),
             ),
             Expanded(
-              child: BlocConsumer<TempratureCubit, ApplicationState>(
-                bloc: _TempratureCubit,
+              child: BlocConsumer<DashboardCubit, ApplicationState>(
+                bloc: _DashboardCubit,
                 builder: (context, state) {
                   switch (state.runtimeType) {
-                    case TempratureChartDataLoadedState:
+                    case DashboardChartDataLoadedState:
                       final chartData =
-                          (state as TempratureChartDataLoadedState).chartData;
+                          (state as DashboardChartDataLoadedState).chartData;
                       return LineChartWidget(chartData.cast<double>());
                     case ApplicationLoadingState:
                       return const Center(

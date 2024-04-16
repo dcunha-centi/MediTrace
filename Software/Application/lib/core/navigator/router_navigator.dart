@@ -23,11 +23,16 @@ class RouterNavigator {
       case ApplicationRoutes.impactsScreen:
       return MaterialPageRoute(builder: (_) => const ImpactsScreen());
 
+      default:
+      return MaterialPageRoute(builder: (_)=> const DashboardScreen());
+      
+/*
       case ApplicationRoutes.splashScreen:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
 
       default:
       return MaterialPageRoute(builder: (_)=> const SplashScreen());
+*/
     }
   }
 }
