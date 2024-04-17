@@ -78,7 +78,7 @@ class _ImpactsScreenState extends State<ImpactsScreen> {
               leading: const Icon(Icons.thermostat, color: Colors.blueGrey),
               title: const Text('Temperature'),
               onTap: () {
-                Navigator.pushNamed(context, 'temprature_screen',
+                Navigator.pushNamed(context, 'temperature_screen',
                     arguments: _selectedDropdownValue);
               },
             ),
@@ -129,21 +129,21 @@ class CardWidget extends StatelessWidget {
     return Card(
       elevation: 3, // Elevação do card
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10), // Adiciona um espaço entre o título e o subtítulo
+            const SizedBox(height: 10), // Adiciona um espaço entre o título e o subtítulo
             Text(
               subtitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

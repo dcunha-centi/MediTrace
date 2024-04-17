@@ -99,7 +99,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'O valor mais alto de tempratura é:',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -116,7 +116,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(width: 5),
-                      Icon(
+                      const Icon(
                         Icons.calendar_today,
                         color: Colors.blueGrey,
                       ),
