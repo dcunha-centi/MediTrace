@@ -5,6 +5,7 @@ import 'package:generic_project/core/cubits/application_state.dart';
 import 'package:generic_project/core/cubits/cubit_factory.dart';
 import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
 import 'package:generic_project/features/dashboard/presentation/components/line_chart_widget.dart';
+import 'package:date_picker_plus/date_picker_plus.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -30,11 +31,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
+    context: context,
+    initialDate: _selectedDate,
+    firstDate: DateTime(2000),
+    lastDate: DateTime.now(),
+    initialDatePickerMode: DatePickerMode.day,
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: Colors.white, // Cor do cabeçalho do calendário
+            onPrimary: Colors.white, // Cor do texto do cabeçalho do calendário
+            background: Colors.white, // Cor de fundo do calendário
+            onSurface: Colors.black, // Cor do texto dos dias selecionáveis
+          ),
+        ),
+        child: child!,
+      );
+    },
+    
+    initialEntryMode: DatePickerEntryMode.calendarOnly, // Modo de exibição sem barra lateral
+  );
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -198,7 +215,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             });
                           }
                         },
-                        items: <String>['Temperature', 'Humidity', 'Impacts']
+                        items: <String>[
+                          'Temperature', 
+                          'Humidity', 
+                          'Impacts'
+                          ]
                             .map<DropdownMenuItem<String>>((String value) {
                           Widget? icon;
                           switch (value) {
@@ -257,20 +278,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: BlocConsumer<DashboardCubit, ApplicationState>(
                     bloc: _dashboardCubit,
                     builder: (context, state) {
-                      switch (state.runtimeType) {
-                        case DashboardChartDataLoadedState:
-                          final chartData =
-                              (state as DashboardChartDataLoadedState)
-                                  .chartData;
-                          return LineChartWidget(chartData.cast<double>());
-                        case ApplicationLoadingState:
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.blueGrey,
-                            ),
-                          );
+                      switch (_selectedDropdownMeasurement) {
+                        case 'Temperature':
+                          return _buildTemperatureChart(context, state);
+                        case 'Humidity':
+                          return _buildHumidityChart(context, state);
+                        case 'Impacts':
+                          return _buildImpactsChart(context, state);
                         default:
-                          return const LineChartWidget([]);
+                          return const SizedBox(); // Caso padrão para quando não houver opção selecionada
                       }
                     },
                     listener: (context, state) {},
@@ -278,6 +294,264 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTemperatureChart(BuildContext context, ApplicationState state) {
+    if (state is DashboardChartDataLoadedState) {
+      final chartData = state.chartData.cast<double>();
+      return LineChartWidget(chartData);
+    } else if (state is ApplicationLoadingState) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.blueGrey,
+        ),
+      );
+    } else {
+      return const LineChartWidget([]); // Caso padrão
+    }
+  }
+
+  Widget _buildHumidityChart(BuildContext context, ApplicationState state) {
+    if (state is DashboardChartDataLoadedState) {
+      final chartData = state.chartData.cast<double>();
+      return LineChartWidget(chartData);
+    } else if (state is ApplicationLoadingState) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.blueGrey,
+        ),
+      );
+    } else {
+      return const LineChartWidget([]); // Caso padrão
+    }
+  }
+
+  Widget _buildImpactsChart(BuildContext context, ApplicationState state) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final double containerWidth = (screenSize.width - 60) / 3;
+
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 40,
+          ),
+          Wrap(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                width: containerWidth,
+                height: 170,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      color: Colors.black.withOpacity(0.5),
+                      width: 2,
+                    ),
+                    vertical: BorderSide(
+                      color: Colors.black.withOpacity(0.5),
+                      width: 2,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.blue, shape: BoxShape.circle),
+                        child: Center(
+                          child: Icon(
+                            Icons.arrow_downward,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Numero de Quedas',
+                            style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '5',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                width: containerWidth,
+                height: 170,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      color: Colors.black.withOpacity(0.5),
+                      width: 2,
+                    ),
+                    vertical: BorderSide(
+                      color: Colors.black.withOpacity(0.5),
+                      width: 2,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.blue, shape: BoxShape.circle),
+                        child: Center(
+                          child: Icon(
+                            Icons.open_in_browser,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Numero de Aberturas',
+                            style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '2',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                width: containerWidth,
+                height: 170,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      color: Colors.black.withOpacity(0.5),
+                      width: 2,
+                    ),
+                    vertical: BorderSide(
+                      color: Colors.black.withOpacity(0.5),
+                      width: 2,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.blue, shape: BoxShape.circle),
+                        child: Center(
+                          child: Icon(
+                            Icons.calendar_month,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Numero de fechos',
+                            style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '5',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

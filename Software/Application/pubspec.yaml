@@ -1,7 +1,9 @@
 name: generic_project
 description: A new Flutter project.
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
+
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -16,6 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
+
 version: 1.0.0+1
 
 environment:
@@ -27,6 +30,7 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+
 dependencies:
   charts_flutter: ^0.12.0
   dio: ^5.4.2
@@ -40,10 +44,13 @@ dependencies:
   shared_preferences: ^2.2.2
   syncfusion_flutter_charts: ^21.2.4
   table_calendar: ^3.0.8
+  booking_calendar: ^1.1.9
+  cr_calendar: ^1.0.0+1
+  scrollable_clean_calendar: ^1.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
- 
+
 
 dev_dependencies:
   json_serializable: ^6.7.1
@@ -63,11 +70,14 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
 flutter:
   generate: true
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
@@ -100,5 +110,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  
   assets:
     - lib/assets/icons/
