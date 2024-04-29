@@ -6,6 +6,7 @@ import 'package:generic_project/core/cubits/cubit_factory.dart';
 import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
 import 'package:generic_project/features/dashboard/presentation/components/line_chart_widget.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -21,6 +22,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String _selectedDropdownBox = 'Option 1';
   String _selectedDropdownMeasurement = 'Temperature';
 
+  List<String> fallsData = [
+    'Box ID: 1 - Date: 2022-04-23 10:00 AM',
+    'Box ID: 2 - Date: 2022-04-23 11:30 AM'
+  ];
+  List<String> openingsData = [
+    'Box ID: 3 - Date: 2022-04-23 09:15 AM'
+  ]; 
+  List<String> closingsData = [
+    'Box ID: 4 - Date: 2022-04-23 08:45 AM',
+    'Box ID: 5 - Date: 2022-04-23 12:00 PM'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -31,27 +44,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: _selectedDate,
-    firstDate: DateTime(2000),
-    lastDate: DateTime.now(),
-    initialDatePickerMode: DatePickerMode.day,
-    builder: (BuildContext context, Widget? child) {
-      return Theme(
-        data: ThemeData.light().copyWith(
-          colorScheme: ColorScheme.light(
-            primary: Colors.white, // Cor do cabeçalho do calendário
-            onPrimary: Colors.white, // Cor do texto do cabeçalho do calendário
-            background: Colors.white, // Cor de fundo do calendário
-            onSurface: Colors.black, // Cor do texto dos dias selecionáveis
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      initialDatePickerMode: DatePickerMode.day,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.white, 
+              onPrimary:
+                  Colors.white, 
+              background: Colors.white, 
+              onSurface: Colors.black,
+            ),
           ),
-        ),
-        child: child!,
-      );
-    },
-    
-    initialEntryMode: DatePickerEntryMode.calendarOnly, // Modo de exibição sem barra lateral
-  );
+          child: child!,
+        );
+      },
+
+      initialEntryMode: DatePickerEntryMode
+          .calendarOnly,
+    );
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -215,11 +230,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             });
                           }
                         },
-                        items: <String>[
-                          'Temperature', 
-                          'Humidity', 
-                          'Impacts'
-                          ]
+                        items: <String>['Temperature', 'Humidity', 'Impacts']
                             .map<DropdownMenuItem<String>>((String value) {
                           Widget? icon;
                           switch (value) {
@@ -286,7 +297,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         case 'Impacts':
                           return _buildImpactsChart(context, state);
                         default:
-                          return const SizedBox(); // Caso padrão para quando não houver opção selecionada
+                          return const SizedBox();
                       }
                     },
                     listener: (context, state) {},
@@ -311,7 +322,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       );
     } else {
-      return const LineChartWidget([]); // Caso padrão
+      return const LineChartWidget([]); 
     }
   }
 
@@ -326,21 +337,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       );
     } else {
-      return const LineChartWidget([]); // Caso padrão
+      return const LineChartWidget([]);
     }
   }
 
   Widget _buildImpactsChart(BuildContext context, ApplicationState state) {
     final Size screenSize = MediaQuery.of(context).size;
+    final Size heightSize = MediaQuery.of(context).size;
     final double containerWidth = (screenSize.width - 60) / 3;
+    final double containerHeight = (heightSize.height - 60) / 2;
 
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            height: 40,
-          ),
+          SizedBox(height: 40),
           Wrap(
             children: [
               Container(
@@ -379,7 +390,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                            color: Colors.blue, shape: BoxShape.circle),
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
                         child: Center(
                           child: Icon(
                             Icons.arrow_downward,
@@ -447,7 +460,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                            color: Colors.blue, shape: BoxShape.circle),
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
                         child: Center(
                           child: Icon(
                             Icons.open_in_browser,
@@ -480,9 +495,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 15,
-              ),
+              SizedBox(width: 15),
               Container(
                 width: containerWidth,
                 height: 170,
@@ -518,7 +531,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                            color: Colors.blue, shape: BoxShape.circle),
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
                         child: Center(
                           child: Icon(
                             Icons.calendar_month,
@@ -552,6 +567,448 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
             ],
+          ),
+          SizedBox(height: 20),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Container(
+                    width: containerWidth,
+                    height: containerHeight,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.symmetric(
+                        horizontal: BorderSide(
+                          color: Colors.black.withOpacity(0.5),
+                          width: 2,
+                        ),
+                        vertical: BorderSide(
+                          color: Colors.black.withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Table(
+                            border: TableBorder.all(color: Colors.grey, width: 0.1),
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey.withOpacity(0.1),
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "Id",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Text(
+                                        "Nome",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Text(
+                                        "Data",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ...List.generate(
+                                20,
+                                (index) => TableRow(
+                                  children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "1",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "Medicamento 1",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "2022-04-23 10:00 AM",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Container(
+                    width: containerWidth,
+                    height: containerHeight,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.symmetric(
+                        horizontal: BorderSide(
+                          color: Colors.black.withOpacity(0.5),
+                          width: 2,
+                        ),
+                        vertical: BorderSide(
+                          color: Colors.black.withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Table(
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey.withOpacity(0.1),
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "Id",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Text(
+                                        "Nome",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Text(
+                                        "Data",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ...List.generate(
+                                20,
+                                (index) => TableRow(
+                                  children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "1",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "Medicamento 1",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "2022-04-23 10:00 AM",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Container(
+                    width: containerWidth,
+                    height: containerHeight, 
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.symmetric(
+                        horizontal: BorderSide(
+                          color: Colors.black.withOpacity(0.5),
+                          width: 2,
+                        ),
+                        vertical: BorderSide(
+                          color: Colors.black.withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Table(
+                            border: TableBorder.all(color: Colors.grey),
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              TableRow(
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey.withOpacity(0.1),
+                                ),
+                                children: [
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "Id",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Text(
+                                        "Nome",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    verticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(4.0),
+                                      child: Text(
+                                        "Data",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ...List.generate(
+                                20,
+                                (index) => TableRow(
+                                  children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "1",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "Medicamento 1",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "2022-04-23 10:00 AM",
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

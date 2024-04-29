@@ -47,6 +47,7 @@ dependencies:
   booking_calendar: ^1.1.9
   cr_calendar: ^1.0.0+1
   scrollable_clean_calendar: ^1.4.0
+  syncfusion_flutter_calendar: ^21.2.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
