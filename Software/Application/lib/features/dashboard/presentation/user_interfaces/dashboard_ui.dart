@@ -75,54 +75,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('Meditrace Dashboard'),
         centerTitle: true,
       ),
-      body: BlocConsumer<DashboardCubit, ApplicationState>(
-        bloc: _dashboardCubit,
-        builder: (context, state) {
-          switch (state.runtimeType) {
-             case UpdateDataLoadedState:
-              movementsIn = (state as UpdateDataLoadedState).movementsIn;
-              movementsOut = (state).movementsOut;
-              chartData = (state).chartData;
-              movementsInLength = movementsIn.length;
-              movementsOutLength = movementsOut.length;
-              measurementResultLength = chartData.length;
-              print("1");
-              print(_selectedDropdownValue!.macAddress);
-              print(_selectedDate);
-              print(filter);
-              break;
-              
-              case DashboardChartDataLoadedState:
-              chartData = (state as DashboardChartDataLoadedState).chartData;
-              print("2");
-              print(_selectedDropdownValue!.macAddress);
-              print(_selectedDate);
-              print(filter);
-              break;
-           
-            case DashboardTransportBoxLoadedState:
-              transportBoxes =
-                  (state as DashboardTransportBoxLoadedState).transportBoxes;
-              _selectedDropdownValue = transportBoxes.first;
-              _dashboardCubit.getMeasurementbyTransportBoxbyDate(
+      body: SingleChildScrollView(
+        child: BlocConsumer<DashboardCubit, ApplicationState>(
+          bloc: _dashboardCubit,
+          builder: (context, state) {
+            switch (state.runtimeType) {
+               case UpdateDataLoadedState:
+                movementsIn = (state as UpdateDataLoadedState).movementsIn;
+                movementsOut = (state).movementsOut;
+                chartData = (state).chartData;
+                movementsInLength = movementsIn.length;
+                movementsOutLength = movementsOut.length;
+                measurementResultLength = chartData.length;
+                print("1");
+                print(_selectedDropdownValue!.macAddress);
+                print(_selectedDate);
+                print(filter);
+                break;
+                
+                case DashboardChartDataLoadedState:
+                chartData = (state as DashboardChartDataLoadedState).chartData;
+                print("2");
+                print(_selectedDropdownValue!.macAddress);
+                print(_selectedDate);
+                print(filter);
+                break;
+             
+              case DashboardTransportBoxLoadedState:
+                transportBoxes =
+                    (state as DashboardTransportBoxLoadedState).transportBoxes;
+                _selectedDropdownValue = transportBoxes.first;
+                _dashboardCubit.getMeasurementbyTransportBoxbyDate(
+                    _selectedDropdownValue!.macAddress,
+                    filter,
+                    _selectedDate.toString());
+                _dashboardCubit.getTransportBoxHistorybyDate(
                   _selectedDropdownValue!.macAddress,
                   filter,
-                  _selectedDate.toString());
-              _dashboardCubit.getTransportBoxHistorybyDate(
-                _selectedDropdownValue!.macAddress,
-                filter,
-                _selectedDate.toString(),
-              );
-              print("2");
-              print(_selectedDropdownValue!.macAddress);
-              print(_selectedDate);
-              print(filter);
-              break;
-            default:
-          }
-          return _buildSuccessState(context);
-        },
-        listener: (context, state) {},
+                  _selectedDate.toString(),
+                );
+                print("2");
+                print(_selectedDropdownValue!.macAddress);
+                print(_selectedDate);
+                print(filter);
+                break;
+              default:
+            }
+            return _buildSuccessState(context);
+          },
+          listener: (context, state) {},
+        ),
       ),
     );
   }

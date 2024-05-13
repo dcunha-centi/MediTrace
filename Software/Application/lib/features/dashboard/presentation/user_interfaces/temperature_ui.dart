@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:generic_project/core/cubits/application_state.dart';
-import 'package:generic_project/core/cubits/cubit_factory.dart';
-import 'package:generic_project/features/dashboard/presentation/business_components/dashboard_cubit.dart';
-import 'package:generic_project/features/dashboard/presentation/components/line_chart_widget.dart';
+import 'package:meditrace/core/cubits/application_state.dart';
+import 'package:meditrace/core/cubits/cubit_factory.dart';
+import 'package:meditrace/features/dashboard/presentation/business_components/dashboard_cubit.dart';
+import 'package:meditrace/features/dashboard/presentation/components/line_chart_widget.dart';
 
 class TempratureScreen extends StatefulWidget {
   const TempratureScreen({Key? key}) : super(key: key);
