@@ -1,11 +1,11 @@
 {
-    "name": "generic_project",
-    "short_name": "generic_project",
-    "start_url": ".",
+    "name": "Meditrace",
+    "short_name": "Meditrace",
+    "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Meditrace.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
@@ -30,6 +30,15 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "screenshots/print_screen.png",
+            "sizes": "1920x1080",
+            "type": "image/png",
+            "purpose": "any",
+            "form_factor": "wide"
         }
     ]
 }

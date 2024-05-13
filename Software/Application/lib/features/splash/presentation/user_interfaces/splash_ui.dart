@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:generic_project/core/navigator/application_routes.dart';
+import 'package:meditrace/core/navigator/application_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,19 +10,30 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends State<SplashScreen> {
 
-  @override
-  void initState() {
-    Future.delayed(const Duration (seconds: 1),() {
-      Navigator.of(context).pushReplacementNamed(ApplicationRoutes.dashboardScreen);
-    },);
-    super.initState();
-  }
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    Navigator.of(context).pushReplacementNamed(ApplicationRoutes.dashboardScreen);
+  });
+}
+
+
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Center(
-      child: Text("Splash"),
-    ));
+  body: Center(
+    child: Text(
+      "Meditrace",
+      style: TextStyle(
+        fontSize: 50,
+        fontWeight: FontWeight.bold, 
+        color: Color.fromARGB(255, 5, 66, 116),
+      ),
+    ),
+  ),
+);
+
   }
 }

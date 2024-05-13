@@ -1,0 +1,4 @@
+enum RouteMovementTypeEnum {
+  inside,
+  out,
+}

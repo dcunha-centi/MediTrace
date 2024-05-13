@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:generic_project/core/cubits/application_cubit_observer.dart';
+import 'package:meditrace/core/cubits/application_cubit_observer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'core/navigator/router_navigator.dart';

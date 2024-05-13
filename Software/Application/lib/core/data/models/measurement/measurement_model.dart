@@ -4,16 +4,19 @@ part 'measurement_model.g.dart';
 
 @JsonSerializable()
 class MeasurementModel {
+  @JsonKey(name: '_id')
   final String id;
-  final double unit;
-  final double value;
-  final double createdAt;
+  final String? idTransportBox;
+  final String value;
+  final String unit;
+  final DateTime createdAt;
 
   MeasurementModel({
-      required this.id,
-      required this.unit,
-      required this.value,
-      required this.createdAt,
+    required this.id,
+    this.idTransportBox,
+    required this.value,
+    required this.unit,
+    required this.createdAt,
   });
 
   factory MeasurementModel.fromJson(Map<String, dynamic> json) =>

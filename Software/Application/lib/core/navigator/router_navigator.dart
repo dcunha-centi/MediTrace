@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:generic_project/core/navigator/application_routes.dart';
-import 'package:generic_project/features/dashboard/presentation/user_interfaces/dashboard_ui.dart';
-import 'package:generic_project/features/dashboard/presentation/user_interfaces/impacts_ui.dart';
-import 'package:generic_project/features/dashboard/presentation/user_interfaces/temperature_ui.dart';
+import 'package:meditrace/core/navigator/application_routes.dart';
+import 'package:meditrace/features/dashboard/presentation/user_interfaces/dashboard_ui.dart';
+import 'package:meditrace/features/splash/presentation/user_interfaces/splash_ui.dart';
 
 class RouterNavigator {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -15,23 +14,8 @@ class RouterNavigator {
     switch (settings.name) {
       case  ApplicationRoutes.dashboardScreen:
       return MaterialPageRoute(builder: (_) => const DashboardScreen());
-
-      case ApplicationRoutes.temperatureScreen:
-      return MaterialPageRoute(builder: (_) => const TempratureScreen());
-
-      case ApplicationRoutes.impactsScreen:
-      return MaterialPageRoute(builder: (_) => const ImpactsScreen());
-
-      default:
-      return MaterialPageRoute(builder: (_)=> const DashboardScreen());
-      
-/*
-      case ApplicationRoutes.splashScreen:
-      return MaterialPageRoute(builder: (_) => const SplashScreen());
-
       default:
       return MaterialPageRoute(builder: (_)=> const SplashScreen());
-*/
     }
   }
 }

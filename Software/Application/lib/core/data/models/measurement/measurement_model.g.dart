@@ -8,16 +8,18 @@ part of 'measurement_model.dart';
 
 MeasurementModel _$MeasurementModelFromJson(Map<String, dynamic> json) =>
     MeasurementModel(
-      id: json['id'] as String,
-      unit: (json['unit'] as num).toDouble(),
-      value: (json['value'] as num).toDouble(),
-      createdAt: (json['createdAt'] as num).toDouble(),
+      id: json['_id'] as String,
+      idTransportBox: json['idTransportBox'] as String?,
+      value: json['value'] as String,
+      unit: json['unit'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$MeasurementModelToJson(MeasurementModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'unit': instance.unit,
+      '_id': instance.id,
+      'idTransportBox': instance.idTransportBox,
       'value': instance.value,
-      'createdAt': instance.createdAt,
+      'unit': instance.unit,
+      'createdAt': instance.createdAt.toIso8601String(),
     };

@@ -19,4 +19,10 @@ class ApplicationRequestConstants {
 
   static const paginationPage = 'page';
   static const paginationLimit = 'limit';
+
+  static const measurementUnit = 'unit=';
+  static const measurementDate = 'createdAt';
+
+  static const movementType = 'movementType=';
+  static const movementDate = 'dateTime';
 }
