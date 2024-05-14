@@ -13,7 +13,7 @@ class TempratureScreen extends StatefulWidget {
 }
 
 class _TempratureScreenState extends State<TempratureScreen> {
-  final _DashboardCubit = CubitFactory.dashboardCubit;
+  final _DashboardCubit = CubitFactory.measurementCubit;
 
   late DateTime _selectedDate;
   String _selectedDropdownValue = 'Option 1';
@@ -22,7 +22,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
-    _DashboardCubit.getMedications();
+    _DashboardCubit.();
     //_DashboardCubit.getChartData(_selectedDate);
   }
 

@@ -15,7 +15,7 @@ class ImpactsScreen extends StatefulWidget {
 }
 
 class _ImpactsScreenState extends State<ImpactsScreen> {
-  final _dashboardCubit = CubitFactory.dashboardCubit;
+  final _dashboardCubit = CubitFactory.measurementCubit;
 
   late DateTime _selectedDate;
   String _selectedDropdownValue = 'Option 1';

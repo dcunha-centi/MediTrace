@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:generic_project/core/cubits/application_state.dart';
-import 'package:generic_project/features/home/domain/use_cases/home_use_case.dart';
+import 'package:meditrace/core/cubits/application_state.dart';
+import 'package:meditrace/features/home/domain/use_cases/home_use_case.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<ApplicationState> {

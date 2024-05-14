@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:generic_project/core/data/repositories/medication_repository/medication_repository.dart';
+import 'package:meditrace/core/data/repositories/medication_repository/medication_repository.dart';
 
 class MedicationRepositoryImpl implements MedicationRepository{
   
