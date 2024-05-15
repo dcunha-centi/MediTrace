@@ -41,7 +41,7 @@ class LineChartWidget extends StatelessWidget {
           tooltipBehavior: TooltipBehavior(
             enable: true,
             header: "",
-            format:tooltipFormat, //alterar conforme tipo de dados
+            format:tooltipFormat, 
             textStyle: const TextStyle(
               color: Colors.black,
               fontSize: 12,

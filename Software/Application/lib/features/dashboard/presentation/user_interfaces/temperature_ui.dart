@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditrace/core/cubits/application_state.dart';
 import 'package:meditrace/core/cubits/cubit_factory.dart';
+import 'package:meditrace/core/data/models/measurement/measurement_model.dart';
 import 'package:meditrace/features/dashboard/presentation/business_components/dashboard_cubit.dart';
 import 'package:meditrace/features/dashboard/presentation/components/line_chart_widget.dart';
 
@@ -163,7 +164,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
                     case DashboardChartDataLoadedState:
                       final chartData =
                           (state as DashboardChartDataLoadedState).chartData;
-                      return LineChartWidget(chartData.cast<double>());
+                      return LineChartWidget(chartData.cast<MeasurementModel>());
                     case ApplicationLoadingState:
                       return const Center(
                         child: CircularProgressIndicator(
@@ -171,7 +172,7 @@ class _TempratureScreenState extends State<TempratureScreen> {
                         ),
                       );
                     default:
-                      return const LineChartWidget([]);
+                      return LineChartWidget(chartData, selectedDropdownValue);
                   }
                 },
                 listener: (context, state) {},

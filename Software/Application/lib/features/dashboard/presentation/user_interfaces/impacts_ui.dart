@@ -24,7 +24,7 @@ class _ImpactsScreenState extends State<ImpactsScreen> {
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
-    _dashboardCubit.getMedications();
+_dashboardCubit.getTransportBoxHistorybyDate(macAddress, measurementType, _selectedDate.toString());
     //_dashboardCubit.getChartData(_selectedDate);
   }
 
@@ -38,7 +38,7 @@ class _ImpactsScreenState extends State<ImpactsScreen> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        _dashboardCubit.getChartData(_selectedDate);
+_dashboardCubit.getTransportBoxHistorybyDate(macAddress, measurementType, _selectedDate.toString());
       });
     }
   }
@@ -141,7 +141,8 @@ class CardWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10), // Adiciona um espaço entre o título e o subtítulo
+            const SizedBox(
+                height: 10), // Adiciona um espaço entre o título e o subtítulo
             Text(
               subtitle,
               style: const TextStyle(
